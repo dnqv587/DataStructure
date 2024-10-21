@@ -1,4 +1,5 @@
 #include "SqList.h"
+#include "LinkList.h"
 #include <iostream>
 
 int main()
