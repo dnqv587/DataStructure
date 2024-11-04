@@ -2,13 +2,80 @@
 #include <memory>
 #include <cassert>
 
+//***********************************************
+// name      : 单链表
+// brief     : 每个节点只包含一个指针域，称为单向链表
+// attention : None
+//***********************************************
+
+
 template <typename T>
 class LinkList
 {
- public:
-	LinkList():_head(new Node,destroy),_size(0)
-	{}
+ private:
+	struct Node
+	{
+		Node():next(nullptr){}
 
+		explicit Node(const T& val):data(val),next(nullptr){}
+
+		T data;		//数据域
+		Node* next;	//指针域
+	};
+
+ public:
+
+	struct iter
+	{
+		explicit iter(Node* const v):data(v){}
+
+		iter operator++()
+		{
+			data = data->next;
+			return *this;
+		}
+
+		iter operator++(int)
+		{
+			auto temp = *this;
+			data = data->next;
+			return temp;
+		}
+
+		T operator*() const
+		{
+			return data->data;
+		}
+
+		bool operator==(std::default_sentinel_t sen) const
+		{
+			return !data;
+		}
+
+		Node* get() const
+		{
+			return data;
+		}
+
+	 private:
+		Node* data;
+	};
+
+	iter begin()
+	{
+		return iter(_head->next);
+	}
+
+	std::default_sentinel_t end()
+	{
+		return {};
+	}
+
+
+	LinkList():_head(new Node, destroy),_size(0)
+	{
+    }
+    /// @brief 拷贝构造
 	LinkList(const LinkList& list)
 	{
 		Node* lNode = _head;
@@ -20,22 +87,92 @@ class LinkList
 			rNode = rNode->next;
 			assert(lNode && rNode);
 		}
+        _size = list._size;
 	}
 
 	LinkList(LinkList&& list) noexcept = default;
 
 	~LinkList()=default;
 
-	
+	iter insert(iter node,const T& val)
+    {
+		assert(contain(node.get()));
+        if(!node.get())
+        {
+			throw std::invalid_argument("invalid argument");
+        }
+		auto* newNode = new Node(val);
+		if(node.get()->next != nullptr)
+		{
+			newNode->next = node.get()->next;
+			node.get()->next = newNode;
+		}
+		else
+		{
+			node.get()->next = newNode;
+			newNode->next = nullptr;
+		}
+		++_size;
+		return iter(newNode);
+    }
+
+	iter pushFront(const T& val)
+	{
+		auto* newNode = new Node(val);
+		newNode->next = _head->next;
+		_head->next = newNode;
+		++_size;
+		return iter(newNode);
+	}
+
+	void eraseAfter(iter node)
+	{
+		assert(contain(node.get()));
+		auto* afterNode = node.get()->next;
+		if(afterNode)
+		{
+			node.get()->next = afterNode->next;
+			--_size;
+			delete afterNode;
+		}
+	}
+
+	void popFront()
+	{
+		auto* front = _head->next;
+		if(front)
+		{
+			_head->next = front->next;
+			delete front;
+			--_size;
+		}
+	}
+
+	void forEach(void (*print)(const T&)) const
+	{
+		auto* currNode = _head->next;
+		while(currNode)
+		{
+			print(currNode->data);
+			currNode = currNode->next;
+		}
+	}
 
  private:
-	struct Node
+	bool contain(Node* node)
 	{
-		explicit  Node(const T& val):data(val){}
+		auto* currNode = _head->next;
+		while(currNode)
+		{
+			if(currNode == node)
+			{
+				return true;
+			}
+			currNode = currNode->next;
+		}
+		return false;
+	}
 
-	 	T data;		//数据域
-		Node* next;	//指针域
-	};
 
  	static void destroy(Node* head)
 	{
