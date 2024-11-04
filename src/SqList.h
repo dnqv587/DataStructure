@@ -2,6 +2,8 @@
 #include <memory>
 #include <exception>
 #include <cstring>
+#include <cassert>
+
 
 
 //***********************************************
@@ -14,6 +16,13 @@ template <typename T>
 class SqList
 {
 public:
+    static const int DEFAULT_CAPACITY = 10;
+
+    SqList()
+    : _data(std::make_unique<T[]>(DEFAULT_CAPACITY)), _len(0), _capacity(DEFAULT_CAPACITY)
+    {
+    }
+
     explicit SqList(size_t capacity)
     : _data(std::make_unique<T[]>(capacity)), _len(0), _capacity(capacity)
     {}
@@ -44,7 +53,7 @@ public:
         _len = 0;
     }
 
-    size_t Length() const
+    size_t size() const
     {
         return _len;
     }
@@ -55,6 +64,13 @@ public:
 
         _data[_len] = val;
         ++_len;
+    }
+
+    T PopBack()
+    {
+        assert(_len > 0);
+        --_len;
+        return std::move(_data[_len]);
     }
 
     void insert(unsigned int pos,const T& val)
