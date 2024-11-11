@@ -2,6 +2,8 @@
 #include "LinkList.h"
 #include "Stack.h"
 #include "BST.h"
+#include "Queue.h"
+#include "CircularQueue.h"
 #include <iostream>
 
 void SqListTest()
@@ -56,20 +58,20 @@ void LinkListTest()
 {
 	LinkList<int> list{};
 
-	list.pushFront(1);
-	list.pushFront(2);
-	auto i3 = list.pushFront(3);
-	list.pushFront(4);
-	list.pushFront(5);
-	auto i6 = list.pushFront(6);
-	list.pushFront(7);
-	list.pushFront(8);
-	list.pushFront(9);
+	list.PushFront(1);
+	list.PushFront(2);
+	auto i3 = list.PushFront(3);
+	list.PushFront(4);
+	list.PushFront(5);
+	auto i6 = list.PushFront(6);
+	list.PushFront(7);
+	list.PushFront(8);
+	list.PushFront(9);
 
 	list.insert(i3,0);
 
-	list.eraseAfter(i6);
-	list.popFront();
+	list.EraseAfter(i6);
+    list.PopFront();
 
 	for(auto i:list)
 	{
@@ -84,7 +86,7 @@ void LinkListTest()
 
 void StackTest()
 {
-    Stack<int> stack;
+    Stack<int,LinkList<int>> stack;
 
     stack.push(10);
     stack.push(9);
@@ -117,13 +119,29 @@ void BSTtest()
 	});
 }
 
+void QueueTest()
+{
+	Queue<int,SqList<int>> que;
+	que.push(10);
+	que.push(9);
+	que.push(8);
+	que.push(7);
+	que.push(6);
+	que.push(5);
+	que.push(4);
+
+	while(!que.empty())
+	{
+		std::cout<<que.pop()<<std::endl;
+	}
+}
+
 int main()
 {
 	//LinkListTest();
-
     //StackTest();
-
-	BSTtest();
+	//BSTtest();
+	QueueTest();
 
     return 0;
 }
