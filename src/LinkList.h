@@ -116,7 +116,7 @@ class LinkList
 		return iter(newNode);
     }
 
-	iter pushFront(const T& val)
+	iter PushFront(const T& val)
 	{
 		auto* newNode = new Node(val);
 		newNode->next = _head->next;
@@ -125,7 +125,20 @@ class LinkList
 		return iter(newNode);
 	}
 
-	void eraseAfter(iter node)
+	iter PushBack(const T& val)
+	{
+		Node* back = _head.get();
+		while(back->next)
+		{
+			back = back->next;
+		}
+		auto* newNode = new Node(val);
+		back->next = newNode;
+		++_size;
+		return iter(newNode);
+	}
+
+	void EraseAfter(iter node)
 	{
 		assert(contain(node.get()));
 		auto* afterNode = node.get()->next;
@@ -137,18 +150,21 @@ class LinkList
 		}
 	}
 
-	void popFront()
+	T PopFront()
 	{
 		auto* front = _head->next;
-		if(front)
+		if(!front)
 		{
-			_head->next = front->next;
-			delete front;
-			--_size;
+			throw std::out_of_range("container is empty");
 		}
+		_head->next = front->next;
+		auto data = std::move(front->data);
+		delete front;
+		--_size;
+		return data;
 	}
 
-	void forEach(void (*print)(const T&)) const
+	void ForEach(void (*print)(const T&)) const
 	{
 		auto* currNode = _head->next;
 		while(currNode)
@@ -156,6 +172,11 @@ class LinkList
 			print(currNode->data);
 			currNode = currNode->next;
 		}
+	}
+
+	size_t size() const
+	{
+		return _size;
 	}
 
  private:
