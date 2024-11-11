@@ -9,12 +9,28 @@ public:
 
     void push(const T& val)
     {
-        _container.PushBack(val);
+        if constexpr (std::is_same_v<C,SqList<T>>)
+        {
+            _container.PushBack(val);
+        }
+        else if constexpr (std::is_same_v<C,LinkList<T>>)
+        {
+            _container.PushFront(val);
+        }
+
     }
 
     T pop()
     {
-        return _container.PopBack();
+        if constexpr (std::is_same_v<C,SqList<T>>)
+        {
+            return _container.PopBack();
+        }
+        else if constexpr (std::is_same_v<C,LinkList<T>>)
+        {
+            return _container.PopFront();
+        }
+
     }
 
     size_t size() const
