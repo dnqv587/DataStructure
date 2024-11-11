@@ -73,6 +73,15 @@ public:
         return std::move(_data[_len]);
     }
 
+	T PopFront()
+	{
+		assert(_len > 0);
+		--_len;
+		auto front = std::move(_data[0]);
+		std::memmove(_data.get(),_data.get()+1,_len*sizeof(T));
+		return front;
+	}
+
     void insert(unsigned int pos,const T& val)
     {
         if(pos == _len)
