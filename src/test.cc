@@ -136,12 +136,37 @@ void QueueTest()
 	}
 }
 
+void CircularQueueTest()
+{
+    CircularQueue<int> que(5);
+    que.push(1);
+    que.push(2);
+    que.push(3);
+    que.push(4);
+    que.push(5);
+
+    while(!que.isEmpty())
+    {
+        std::cout<<que.pop()<<std::endl;
+    }
+
+    que.push(3);
+    que.push(4);
+    que.push(5);
+
+    while(!que.isEmpty())
+    {
+        std::cout<<que.pop()<<std::endl;
+    }
+}
+
 int main()
 {
 	//LinkListTest();
     //StackTest();
 	//BSTtest();
-	QueueTest();
+	//QueueTest();
+    CircularQueueTest();
 
     return 0;
 }
