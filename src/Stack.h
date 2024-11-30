@@ -6,7 +6,7 @@ class Stack
 {
 public:
 
-
+	/// @brief 入栈
     void push(const T& val)
     {
         if constexpr (std::is_same_v<C,SqList<T>>)
@@ -20,6 +20,8 @@ public:
 
     }
 
+	/// @brief 出栈
+	/// @return 栈顶对象（copy）
     T pop()
     {
         if constexpr (std::is_same_v<C,SqList<T>>)
