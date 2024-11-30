@@ -4,6 +4,7 @@
 #include "BST.h"
 #include "Queue.h"
 #include "CircularQueue.h"
+#include "AVL.h"
 #include <iostream>
 
 void SqListTest()
@@ -105,17 +106,32 @@ void StackTest()
 void BSTtest()
 {
 	BST<int> bst(10);
-	bst.insert(1);
-	bst.insert(11);
-	bst.insert(2);
-	bst.insert(3);
-	bst.insert(4);
-	bst.insert(55);
-	bst.insert(9);
-	bst.insert(999);
+	bst.Insert(55);
+	bst.Insert(9);
+	bst.Insert(999);
+	bst.Insert(888);
+    bst.Insert(1);
+    bst.Insert(11);
+    bst.Insert(2);
+    bst.Insert(3);
+    bst.Insert(4);
+	bst.Insert(555);
+	bst.Insert(444);
+	bst.Insert(6666);
 
 	bst.inOrder([](auto i){
 		std::cout<<i<<std::endl;
+	});
+
+    std::cout<<"left depth:"<<bst.LeftDepth()<<std::endl;
+    std::cout<<"right depth:"<<bst.RightDepth()<<std::endl;
+
+    std::cout<<"max:"<<bst.max()<<std::endl;
+    std::cout<<"min:"<<bst.min()<<std::endl;
+
+	bst.Delete(444);
+	bst.inOrder([](auto i){
+	  std::cout<<i<<std::endl;
 	});
 }
 
@@ -164,9 +180,9 @@ int main()
 {
 	//LinkListTest();
     //StackTest();
-	//BSTtest();
+	BSTtest();
 	//QueueTest();
-    CircularQueueTest();
+    //CircularQueueTest();
 
     return 0;
 }
