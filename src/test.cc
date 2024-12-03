@@ -5,6 +5,7 @@
 #include "Queue.h"
 #include "CircularQueue.h"
 #include "AVL.h"
+#include "AdjacencyGraph.h"
 #include <iostream>
 
 void SqListTest()
@@ -176,13 +177,30 @@ void CircularQueueTest()
     }
 }
 
+void AdjacencyGraphTest()
+{
+    AdjacencyGraph<char> graph;
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+
+    graph.addEdge(0,1);
+    graph.addEdge(0,2);
+    graph.addEdge(1,3);
+    graph.addEdge(3,0);
+
+    graph.print();
+}
+
 int main()
 {
 	//LinkListTest();
     //StackTest();
-	BSTtest();
+	//BSTtest();
 	//QueueTest();
     //CircularQueueTest();
+    AdjacencyGraphTest();
 
     return 0;
 }
